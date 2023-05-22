@@ -71,7 +71,7 @@ namespace TemeGC
                 case ("S4P1"):
                     pictureBox1 = S4.P1(pictureBox1);
                     break;
-                case ("53P1"):
+                case ("S5P1"):
                     pictureBox1 = S5.P1(pictureBox1);
                     break;
                 case ("S6P1"):
