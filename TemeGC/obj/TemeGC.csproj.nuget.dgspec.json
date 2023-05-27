@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Computer9088\\OneDrive - Universitatea din Oradea\\Documente\\C#\\TemeGC\\TemeGC\\TemeGC.csproj": {}
+    "C:\\Users\\Computer9088\\Documents\\CDiez\\TemeGC\\TemeGC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Computer9088\\OneDrive - Universitatea din Oradea\\Documente\\C#\\TemeGC\\TemeGC\\TemeGC.csproj": {
+    "C:\\Users\\Computer9088\\Documents\\CDiez\\TemeGC\\TemeGC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Computer9088\\OneDrive - Universitatea din Oradea\\Documente\\C#\\TemeGC\\TemeGC\\TemeGC.csproj",
+        "projectUniqueName": "C:\\Users\\Computer9088\\Documents\\CDiez\\TemeGC\\TemeGC.csproj",
         "projectName": "TemeGC",
-        "projectPath": "C:\\Users\\Computer9088\\OneDrive - Universitatea din Oradea\\Documente\\C#\\TemeGC\\TemeGC\\TemeGC.csproj",
+        "projectPath": "C:\\Users\\Computer9088\\Documents\\CDiez\\TemeGC\\TemeGC.csproj",
         "packagesPath": "C:\\Users\\Computer9088\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Computer9088\\OneDrive - Universitatea din Oradea\\Documente\\C#\\TemeGC\\TemeGC\\obj\\",
+        "outputPath": "C:\\Users\\Computer9088\\Documents\\CDiez\\TemeGC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Computer9088\\AppData\\Roaming\\NuGet\\NuGet.Config",

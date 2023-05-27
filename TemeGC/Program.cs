@@ -7,7 +7,7 @@ namespace TemeGC
         {
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
-            
+            Console.WriteLine(@"Hello There!");
         }
     }
 }
