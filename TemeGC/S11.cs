@@ -2,25 +2,25 @@
 {
     internal class S11
     {
-        public static GraphPanel gpanel;
+        public static GraphPanel gpanel = null!;
 
         public enum PhaseType
         {
-            DRAW,
-            TRIANGLE,
-            FINAL
+            Draw,
+            Triangle,
+            Final
         }
 
         public static PictureBox pb = null!;
-        public static PhaseType phase = PhaseType.DRAW;
-        public static Graphics _g = null!;
+        public static PhaseType phase = PhaseType.Draw;
+        public static Graphics g = null!;
 
         public static PictureBox P1(PictureBox pbi)
         {
             pb = pbi;
 
             pb.Size = new Size(Form1.width, Form1.height);
-            _g = pb.CreateGraphics();
+            g = pb.CreateGraphics();
             PaintEverything();
 
             InfoPanel infoPanel = new InfoPanel(pb);
@@ -39,62 +39,65 @@
             String str = "Phase:";
             switch (S11.phase)
             {
-                case S11.PhaseType.DRAW:
+                case S11.PhaseType.Draw:
                     str += "Left Click to Add Vertices, Right Click to Remove!";
                     break;
-                case S11.PhaseType.TRIANGLE:
+                case S11.PhaseType.Triangle:
                     str += "Now we've triangulated it, click CONTINUE to see the edges we can remove";
                     break;
-                case S11.PhaseType.FINAL:
+                case S11.PhaseType.Final:
                     str += "We've removed as many diagonals as we could! We have an 4-approximation!";
                     break;
             }
 
-            _g.DrawString(str, new Font("Arial", 6), new SolidBrush(Color.Red), new PointF(30, Form1.height - 30));
-            _g.FillRectangle(new SolidBrush(Color.Black), 700, Form1.height - 50, 130, 50);
-            _g.DrawString("CONTINUE", new Font("Arial", 6), new SolidBrush(Color.Red),
+            g.DrawString(str, new Font("Arial", 6), new SolidBrush(Color.Red), new PointF(30, Form1.height - 30));
+            g.FillRectangle(new SolidBrush(Color.Black), 700, Form1.height - 50, 130, 50);
+            g.DrawString("CONTINUE", new Font("Arial", 6), new SolidBrush(Color.Red),
                 new PointF(730, Form1.height - 30));
 
-            _g.FillRectangle(new SolidBrush(Color.Purple), 850, Form1.height - 50, 130, 50);
-            _g.DrawString("CLEAR", new Font("Arial", 6), new SolidBrush(Color.Red), new PointF(880, Form1.height - 30));
+            g.FillRectangle(new SolidBrush(Color.Purple), 850, Form1.height - 50, 130, 50);
+            g.DrawString("CLEAR", new Font("Arial", 6), new SolidBrush(Color.Red), new PointF(880, Form1.height - 30));
             //Lower Panel #end
         }
 
 
         //Additional functions #start
-        public static void phaseAdd()
+        public static void PhaseAdd()
         {
-            phase = (phase.Equals(PhaseType.DRAW)) ? PhaseType.TRIANGLE :
-                (phase.Equals(PhaseType.TRIANGLE)) ? PhaseType.FINAL : PhaseType.DRAW;
+            phase = (phase.Equals(PhaseType.Draw)) ? PhaseType.Triangle :
+                (phase.Equals(PhaseType.Triangle)) ? PhaseType.Final : PhaseType.Draw;
 
-            if (phase == PhaseType.DRAW)
+            if (phase == PhaseType.Draw)
             {
                 GraphPanel.polygon = new SimplePolygon(GraphPanel.vertices);
-                GraphPanel.edges = new List<Edge>();
+                GraphPanel.edgesList = new List<Edge>();
             }
 
-            if (phase == PhaseType.TRIANGLE)
+            if (phase == PhaseType.Triangle)
             {
-                GraphPanel.edges = GraphPanel.polygon.triangulate();
-                GraphPanel.polygon.incorporate();
+                GraphPanel.edgesList = GraphPanel.polygon.Triangulate();
+                GraphPanel.polygon.Incorporate();
             }
 
-            if (phase == PhaseType.FINAL)
+            if (phase == PhaseType.Final)
             {
                 Console.WriteLine("General");
-                GraphPanel.decompose();
+                GraphPanel.Decompose();
                 Console.WriteLine("Kenobi");
             }
             
-            GraphPanel.paintComponent();
+            GraphPanel.PaintComponent();
         }
 
-        public static void phaseClear()
+        public static void PhaseClear()
         {
             GraphPanel.polygon = new SimplePolygon(new Vertex[] { });
             GraphPanel.vertices = new List<Vertex>();
-            GraphPanel.edges = new List<Edge>();
-            phase = PhaseType.DRAW;
+            GraphPanel.edgesList = new List<Edge>();
+            phase = PhaseType.Draw;
+            
+            GraphPanel.PaintComponent();
+
         }
         //Additional functions #end
 
@@ -104,9 +107,9 @@
         {
             String numberToString = (number < 10) ? (" " + number) : (number + "");
 
-            _g.FillEllipse(new SolidBrush(Color.Blue), pF.X - 8, pF.Y - 8, 16, 16);
-            _g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 2), pF.X - 8, pF.Y - 8, 16, 16);
-            _g.DrawString(numberToString, new Font("Arial", 6), new SolidBrush(Color.White),
+            g.FillEllipse(new SolidBrush(Color.Blue), pF.X - 8, pF.Y - 8, 16, 16);
+            g.DrawEllipse(new Pen(new SolidBrush(Color.Red), 2), pF.X - 8, pF.Y - 8, 16, 16);
+            g.DrawString(numberToString, new Font("Arial", 6), new SolidBrush(Color.White),
                 new PointF(pF.X - 8, pF.Y - 6));
         }
 
@@ -118,109 +121,109 @@
     {
         public InfoPanel(PictureBox pictureBox)
         {
-            pictureBox.MouseClick += InfoPanelMC;
+            pictureBox.MouseClick += InfoPanelMc;
         }
 
 
-        public static void InfoPanelMC(object? sender, MouseEventArgs e)
+        public static void InfoPanelMc(object? sender, MouseEventArgs e)
         {
             if (e.X > 700 && e.X < 830 && e.Y > Form1.height - 50 && e.Y < Form1.height)
-                S11.phaseAdd();
+                S11.PhaseAdd();
             if (e.X > 850 && e.X < 980 && e.Y > Form1.height - 50 && e.Y < Form1.height)
-                S11.phaseClear();
+                S11.PhaseClear();
         }
     } //Working Well
 
     class GraphPanel
     {
         public static SimplePolygon polygon = null!;
-        public static List<Edge> edges = null!;
+        public static List<Edge> edgesList = null!;
         public static List<Vertex> vertices = null!;
 
 
         public GraphPanel(PictureBox pb)
         {
-            pb.MouseClick += GraphPanelMC;
+            pb.MouseClick += GraphPanelMc;
 
             polygon = new SimplePolygon(new Vertex[] { });
             vertices = new List<Vertex>();
-            edges = new List<Edge>();
+            edgesList = new List<Edge>();
         }
 
-        public static void paintComponent()
+        public static void PaintComponent()
         {
             S11.PaintEverything();
 
-            polygon.paint(S11._g);
-            if (S11.phase != S11.PhaseType.DRAW)
+            polygon.Paint(S11.g);
+            if (S11.phase != S11.PhaseType.Draw)
             {
                 int i = 0;
-                foreach (Edge edge in edges)
+                foreach (Edge edge in edgesList)
                 {
-                    edge.paint(S11._g, i++);
+                    edge.Paint(S11.g, i++);
                 }
             }
         }
 
-        public static void decompose()
+        public static void Decompose()
         {
-            Console.WriteLine("hello");
+            Console.WriteLine(@"hello");
             foreach (Vertex vertex in vertices)
             {
-                vertex.getEdges().Sort((o1, o2) =>
+                vertex.GetEdges().Sort((o1, o2) =>
                 {
-                    if ((o1.getCenter()[1] - vertex.getY()) * (o2.getCenter()[1] - vertex.getY()) < 0)
-                        return o1.getCenter()[1] - o2.getCenter()[1];
-                    int crossProduct = SimplePolygon.crossProduct(vertex.getCoordsArr(), o1.getCenter(),
-                        vertex.getCoordsArr(), o2.getCenter());
+                    if ((o1.GetCenter()[1] - vertex.GetY()) * (o2.GetCenter()[1] - vertex.GetY()) < 0)
+                        return o1.GetCenter()[1] - o2.GetCenter()[1];
+                    int crossProduct = SimplePolygon.CrossProduct(vertex.GetCoordsArr(), o1.GetCenter(),
+                        vertex.GetCoordsArr(), o2.GetCenter());
                     //return Integer.compare(crossProduct, 0);
                     return crossProduct == 0 ? 0 : crossProduct < 0 ? -1 : 1;
                 });
             }
 
-            for (int i = 0; i < edges.Count && edges.Count != 0; i++)
+            for (int i = 0; i < edgesList.Count && edgesList.Count != 0; i++)
             {
-                Edge edge = edges[i];
-                if (vertexClearance(edge, edge.getEnd()) && vertexClearance(edge, edge.getStart()))
+                Edge edge = edgesList[i];
+                if (VertexClearance(edge, edge.GetEnd()) && VertexClearance(edge, edge.GetStart()))
                 {
-                    removeEdge(edge);
+                    RemoveEdge(edge);
                     i--;
                 }
             }
 
-            Console.WriteLine("there");
+            Console.WriteLine(@"there");
         }
 
-        public static bool vertexClearance(Edge edge, Vertex vertex)
+        public static bool VertexClearance(Edge edge, Vertex vertex)
         {
-            List<Edge> edges = vertex.getEdges();
+            List<Edge> edges = vertex.GetEdges();
             if (edges.Count == 3)
             {
-                return vertex.sinAngle(vertex.getPrev(), vertex.getNext()) <= 0;
+                return vertex.SinAngle(vertex.GetPrev(), vertex.GetNext()) <= 0;
             }
 
             Edge prev = edges[(edges.IndexOf(edge) - 1 + edges.Count) % edges.Count];
             Edge next = edges[(edges.IndexOf(edge) + 1) % edges.Count];
-            return vertex.sinAngle(prev, next) <= 0;
+            return vertex.SinAngle(prev, next) <= 0;
         }
 
-        public static void removeEdge(Edge edge)
+        public static void RemoveEdge(Edge edge)
         {
-            edge.getStart().removeEdge(edge);
-            edge.getEnd().removeEdge(edge);
-            edges.Remove(edge);
+            edge.GetStart().RemoveEdge(edge);
+            edge.GetEnd().RemoveEdge(edge);
+            edgesList.Remove(edge);
         }
 
 
-        private static void GraphPanelMC(object? sender, MouseEventArgs e)
+        private static void GraphPanelMc(object? sender, MouseEventArgs e)
         {
             if (e.Y < Form1.height - 100)
-                if (S11.phase == S11.PhaseType.DRAW)
+                if (S11.phase == S11.PhaseType.Draw)
                 {
                     vertices.Add(new Vertex(e.X, e.Y));
                     polygon = new SimplePolygon(vertices);
 
-                    paintComponent();
+                    PaintComponent();
 
                     /*if (e.getButton() == MouseEvent.BUTTON3)
                     {
@@ -245,62 +248,62 @@
 
     class SimplePolygon
     {
-        List<Vertex> vertices;
-        List<Edge> edges = null!;
-        bool clockwise;
-        int[,] coordsArray;
+        List<Vertex> _vertices;
+        List<Edge> _edges = null!;
+        bool _clockwise;
+        int[,] _coordsArray;
 
         public static Color[] colors = { Color.Gray, Color.Crimson, Color.LawnGreen, Color.DodgerBlue };
 
         public SimplePolygon(Vertex[] vertices)
         {
-            this.vertices = new List<Vertex>(vertices);
-            this.edges = new List<Edge>();
+            this._vertices = new List<Vertex>(vertices);
+            this._edges = new List<Edge>();
             if (vertices.Length == 0)
             {
                 return;
             }
 
-            for (int i = 0; i < this.vertices.Count; i++)
+            for (int i = 0; i < this._vertices.Count; i++)
             {
-                edges.Add(Edge.polygonalEdge(this.vertices[i], this.vertices[(i + 1) % this.vertices.Count]));
+                _edges.Add(Edge.PolygonalEdge(this._vertices[i], this._vertices[(i + 1) % this._vertices.Count]));
             }
 
-            Vertex lowest = this.vertices[0];
-            foreach (Vertex vertex in this.vertices)
+            Vertex lowest = this._vertices[0];
+            foreach (Vertex vertex in this._vertices)
             {
-                if (vertex.getY() < lowest.getY() || (vertex.getY() == lowest.getY() && vertex.getX() < lowest.getX()))
+                if (vertex.GetY() < lowest.GetY() || (vertex.GetY() == lowest.GetY() && vertex.GetX() < lowest.GetX()))
                     lowest = vertex;
-                vertex.setColor(colors[0]);
+                vertex.SetColor(colors[0]);
             }
 
-            clockwise = left(lowest.getCoordsArr(), lowest.getPrev().getCoordsArr(), lowest.getNext().getCoordsArr());
+            _clockwise = Left(lowest.GetCoordsArr(), lowest.GetPrev().GetCoordsArr(), lowest.GetNext().GetCoordsArr());
         }
 
         public SimplePolygon(List<Vertex> vertices)
         {
-            this.vertices = new List<Vertex>(vertices);
-            this.edges = new List<Edge>();
-            for (int i = 0; i < this.vertices.Count; i++)
+            this._vertices = new List<Vertex>(vertices);
+            this._edges = new List<Edge>();
+            for (int i = 0; i < this._vertices.Count; i++)
             {
-                edges.Add(Edge.polygonalEdge(this.vertices[i], this.vertices[(i + 1) % this.vertices.Count]));
+                _edges.Add(Edge.PolygonalEdge(this._vertices[i], this._vertices[(i + 1) % this._vertices.Count]));
             }
 
-            Vertex lowest = this.vertices[0];
-            foreach (Vertex vertex in this.vertices)
+            Vertex lowest = this._vertices[0];
+            foreach (Vertex vertex in this._vertices)
             {
-                if (vertex.getX() < lowest.getX())
+                if (vertex.GetX() < lowest.GetX())
                     lowest = vertex;
-                vertex.setColor(colors[0]);
+                vertex.SetColor(colors[0]);
             }
 
-            clockwise = left(lowest.getCoordsArr(), lowest.getPrev().getCoordsArr(), lowest.getNext().getCoordsArr());
+            _clockwise = Left(lowest.GetCoordsArr(), lowest.GetPrev().GetCoordsArr(), lowest.GetNext().GetCoordsArr());
         }
 
 
-        public void paint(Graphics _g)
+        public void Paint(Graphics g)
         {
-            int[,] gca = getCoordsArray();
+            int[,] gca = GetCoordsArray();
             List<Point> listPoint = new List<Point>();
             int i;
             for (i = 0; i < gca.GetLength(1); i++)
@@ -311,72 +314,72 @@
 
             if (listPoint.Count > 1)
             {
-                _g.FillPolygon(new SolidBrush(Color.Aqua), listPoint.ToArray());
-                _g.DrawPolygon(new Pen(new SolidBrush(Color.Blue), 4), listPoint.ToArray());
+                g.FillPolygon(new SolidBrush(Color.Aqua), listPoint.ToArray());
+                g.DrawPolygon(new Pen(new SolidBrush(Color.Blue), 4), listPoint.ToArray());
             }
 
             i = 0;
-            foreach (Vertex vertex in vertices)
+            foreach (Vertex vertex in _vertices)
             {
-                _g.FillEllipse(new SolidBrush(vertex.getColor()), vertex.getX() - 5, vertex.getY() - 5, 10, 10);
-                _g.DrawString("" + i++, new Font("Arial", 6), new SolidBrush(vertex.getColor()),
-                    new PointF(vertex.getX() + 5, vertex.getY() + 5));
+                g.FillEllipse(new SolidBrush(vertex.GetColor()), vertex.GetX() - 5, vertex.GetY() - 5, 10, 10);
+                g.DrawString("" + i++, new Font("Arial", 6), new SolidBrush(vertex.GetColor()),
+                    new PointF(vertex.GetX() + 5, vertex.GetY() + 5));
             }
         }
 
-        public int[,] getCoordsArray()
+        public int[,] GetCoordsArray()
         {
-            if (coordsArray != null && coordsArray.Length == vertices.Count)
-                return coordsArray;
-            coordsArray = new int[2, vertices.Count];
+            if (_coordsArray != null && _coordsArray.Length == _vertices.Count)
+                return _coordsArray;
+            _coordsArray = new int[2, _vertices.Count];
             int i = 0;
-            foreach (Vertex vertex in vertices)
+            foreach (Vertex vertex in _vertices)
             {
-                coordsArray[0, i] = vertex.getX();
-                coordsArray[1, i++] = vertex.getY();
+                _coordsArray[0, i] = vertex.GetX();
+                _coordsArray[1, i++] = vertex.GetY();
             }
 
-            return coordsArray;
+            return _coordsArray;
         }
 
-        public Edge clipEar(Vertex v0)
+        public Edge ClipEar(Vertex v0)
         {
-            if (!diagonal(v0.getPrev(), v0.getNext()))
+            if (!Diagonal(v0.GetPrev(), v0.GetNext()))
             {
                 return null;
             }
 
-            return Edge.polygonalEdge(v0.getPrev(), v0.getNext());
+            return Edge.PolygonalEdge(v0.GetPrev(), v0.GetNext());
         }
 
-        public List<Edge> triangulate()
+        public List<Edge> Triangulate()
         {
-            if (vertices.Count <= 2)
+            if (_vertices.Count <= 2)
                 return new List<Edge>();
-            if (clockwise)
+            if (_clockwise)
             {
-                foreach (Edge edge in this.edges)
+                foreach (Edge edge in this._edges)
                 {
-                    edge.invert();
+                    edge.Invert();
                 }
 
-                foreach (Vertex vertex in vertices)
+                foreach (Vertex vertex in _vertices)
                 {
-                    vertex.invert();
+                    vertex.Invert();
                 }
 
-                vertices.Reverse();
-                this.edges.Reverse();
-                clockwise = false;
+                _vertices.Reverse();
+                this._edges.Reverse();
+                _clockwise = false;
             }
 
             List<Edge> edges = new List<Edge>();
             int i = 0;
-            Vertex pointer = vertices[0];
-            while (pointer.getNext() != pointer.getPrev() && i < 200)
+            Vertex pointer = _vertices[0];
+            while (pointer.GetNext() != pointer.GetPrev() && i < 200)
             {
-                Edge edge = clipEar(pointer);
-                pointer = pointer.getPrev();
+                Edge edge = ClipEar(pointer);
+                pointer = pointer.GetPrev();
                 if (edge != null)
                 {
                     edges.Add(edge);
@@ -385,45 +388,45 @@
                 i++;
             }
 
-            if (this.edges.Count > 0)
+            if (this._edges.Count > 0)
                 edges.RemoveAt(edges.Count - 1);
-            for (i = 0; i < this.vertices.Count; i++)
+            for (i = 0; i < this._vertices.Count; i++)
             {
-                Edge.orderVertex(this.vertices[i], this.vertices[(i + 1) % this.vertices.Count]);
+                Edge.OrderVertex(this._vertices[i], this._vertices[(i + 1) % this._vertices.Count]);
             }
 
             foreach (Edge edge in edges)
             {
-                edge.incorporate();
+                edge.Incorporate();
             }
 
             return edges;
         }
 
-        public void incorporate()
+        public void Incorporate()
         {
-            foreach (Edge edge in edges)
+            foreach (Edge edge in _edges)
             {
-                edge.incorporate();
+                edge.Incorporate();
             }
         }
 
-        public bool diagonal(Vertex v0, Vertex v1)
+        public bool Diagonal(Vertex v0, Vertex v1)
         {
-            return inCone(v0, v1) && inCone(v1, v0) && diagonalie(v0, v1);
+            return InCone(v0, v1) && InCone(v1, v0) && Diagonalie(v0, v1);
         }
 
-        public bool diagonalie(Vertex v0, Vertex v1)
+        public bool Diagonalie(Vertex v0, Vertex v1)
         {
-            foreach (Edge edge in edges)
+            foreach (Edge edge in _edges)
             {
-                if (edge.contains(v0) || edge.contains(v1))
+                if (edge.Contains(v0) || edge.Contains(v1))
                 {
                     continue;
                 }
 
-                if (intersectsProp(edge.getStart().getCoordsArr(), edge.getEnd().getCoordsArr(), v0.getCoordsArr(),
-                        v1.getCoordsArr()))
+                if (IntersectsProp(edge.GetStart().GetCoordsArr(), edge.GetEnd().GetCoordsArr(), v0.GetCoordsArr(),
+                        v1.GetCoordsArr()))
                 {
                     return false;
                 }
@@ -432,43 +435,43 @@
             return true;
         }
 
-        public bool inCone(Vertex v0, Vertex v1)
+        public bool InCone(Vertex v0, Vertex v1)
         {
-            Vertex next = vertices[(vertices.IndexOf(v0) + 1) % vertices.Count];
-            Vertex prev = vertices[(vertices.IndexOf(v0) - 1 + vertices.Count) % vertices.Count];
-            if (leftOn(v0.getCoordsArr(), next.getCoordsArr(), prev.getCoordsArr()))
+            Vertex next = _vertices[(_vertices.IndexOf(v0) + 1) % _vertices.Count];
+            Vertex prev = _vertices[(_vertices.IndexOf(v0) - 1 + _vertices.Count) % _vertices.Count];
+            if (leftOn(v0.GetCoordsArr(), next.GetCoordsArr(), prev.GetCoordsArr()))
             {
-                return left(v0.getCoordsArr(), v1.getCoordsArr(), prev.getCoordsArr()) &&
-                       left(v1.getCoordsArr(), v0.getCoordsArr(), next.getCoordsArr());
+                return Left(v0.GetCoordsArr(), v1.GetCoordsArr(), prev.GetCoordsArr()) &&
+                       Left(v1.GetCoordsArr(), v0.GetCoordsArr(), next.GetCoordsArr());
             }
 
-            return !(leftOn(v0.getCoordsArr(), v1.getCoordsArr(), next.getCoordsArr()) &&
-                     leftOn(v1.getCoordsArr(), v0.getCoordsArr(), prev.getCoordsArr()));
+            return !(leftOn(v0.GetCoordsArr(), v1.GetCoordsArr(), next.GetCoordsArr()) &&
+                     leftOn(v1.GetCoordsArr(), v0.GetCoordsArr(), prev.GetCoordsArr()));
         }
 
-        public static bool intersectsProp(int[] a, int[] b, int[] c, int[] d)
+        public static bool IntersectsProp(int[] a, int[] b, int[] c, int[] d)
         {
-            if (collinear(a, b, c) && collinear(a, b, d))
+            if (Collinear(a, b, c) && Collinear(a, b, d))
             {
-                return (between(a, b, c) || between(a, b, d));
+                return (Between(a, b, c) || Between(a, b, d));
             }
 
-            if ((between(a, b, c) || between(a, b, d) || between(c, d, a) || between(c, d, b)))
+            if ((Between(a, b, c) || Between(a, b, d) || Between(c, d, a) || Between(c, d, b)))
             {
                 return true;
             }
 
-            if (collinear(a, b, c) || collinear(a, b, d) || collinear(c, d, a) || collinear(c, d, b))
+            if (Collinear(a, b, c) || Collinear(a, b, d) || Collinear(c, d, a) || Collinear(c, d, b))
             {
                 return false;
             }
 
-            return (left(a, b, c) != left(a, b, d)) && (left(c, d, a) != left(c, d, b));
+            return (Left(a, b, c) != Left(a, b, d)) && (Left(c, d, a) != Left(c, d, b));
         }
 
-        public static bool between(int[] a, int[] b, int[] c)
+        public static bool Between(int[] a, int[] b, int[] c)
         {
-            if (!collinear(a, b, c))
+            if (!Collinear(a, b, c))
                 return false;
             if (a[0] != b[0])
                 return ((a[0] <= c[0]) && (c[0] <= b[0])) ||
@@ -477,22 +480,22 @@
                    ((a[1] >= c[1]) && (c[1] >= b[1]));
         }
 
-        public static bool left(int[] a, int[] b, int[] c)
+        public static bool Left(int[] a, int[] b, int[] c)
         {
-            return crossProduct(a, b, a, c) > 0;
+            return CrossProduct(a, b, a, c) > 0;
         }
 
         public static bool leftOn(int[] a, int[] b, int[] c)
         {
-            return crossProduct(a, b, a, c) >= 0;
+            return CrossProduct(a, b, a, c) >= 0;
         }
 
-        public static bool collinear(int[] a, int[] b, int[] c)
+        public static bool Collinear(int[] a, int[] b, int[] c)
         {
-            return crossProduct(a, b, a, c) == 0;
+            return CrossProduct(a, b, a, c) == 0;
         }
 
-        public static int crossProduct(int[] a, int[] b, int[] c, int[] d)
+        public static int CrossProduct(int[] a, int[] b, int[] c, int[] d)
         {
             return (b[0] - a[0]) * (d[1] - c[1]) - (b[1] - a[1]) * (d[0] - c[0]);
         }
@@ -500,188 +503,188 @@
 
     class Vertex
     {
-        private int x, y;
-        private Vertex next, prev;
-        private Color color;
-        private List<Edge> edges;
+        private int _x, _y;
+        private Vertex _next, _prev;
+        private Color _color;
+        private List<Edge> _edges;
 
         public Vertex(int x, int y)
         {
-            this.x = x;
-            this.y = y;
-            color = Color.Gray;
-            edges = new List<Edge>();
+            this._x = x;
+            this._y = y;
+            _color = Color.Gray;
+            _edges = new List<Edge>();
         }
 
 
-        public int[] getCoordsArr()
+        public int[] GetCoordsArr()
         {
-            return new int[] { x, y };
+            return new int[] { _x, _y };
         }
 
-        public int getX()
+        public int GetX()
         {
-            return x;
+            return _x;
         }
 
-        public int getY()
+        public int GetY()
         {
-            return y;
+            return _y;
         }
 
-        public Vertex getNext()
+        public Vertex GetNext()
         {
-            return next;
+            return _next;
         }
 
-        public Vertex getPrev()
+        public Vertex GetPrev()
         {
-            return prev;
+            return _prev;
         }
 
-        public Color getColor()
+        public Color GetColor()
         {
-            return color;
+            return _color;
         }
 
-        public void setColor(Color color)
+        public void SetColor(Color color)
         {
-            this.color = color;
+            this._color = color;
         }
 
-        public void setNext(Vertex next)
+        public void SetNext(Vertex next)
         {
-            this.next = next;
+            this._next = next;
         }
 
-        public void setPrev(Vertex prev)
+        public void SetPrev(Vertex prev)
         {
-            this.prev = prev;
+            this._prev = prev;
         }
 
-        public void invert()
+        public void Invert()
         {
-            (this.prev, this.next) = (this.next, this.prev);
+            (this._prev, this._next) = (this._next, this._prev);
         }
 
-        public void addEdge(Edge edge)
+        public void AddEdge(Edge edge)
         {
-            if (edges.Contains(edge))
+            if (_edges.Contains(edge))
                 return;
-            edges.Add(edge);
+            _edges.Add(edge);
         }
 
-        public void removeEdge(Edge edge)
+        public void RemoveEdge(Edge edge)
         {
-            edges.Remove(edge);
+            _edges.Remove(edge);
         }
 
-        public List<Edge> getEdges()
+        public List<Edge> GetEdges()
         {
-            return edges;
+            return _edges;
         }
 
-        public double sinAngle(Edge firstEdge, Edge secondEdge)
+        public double SinAngle(Edge firstEdge, Edge secondEdge)
         {
-            int crossProduct = SimplePolygon.crossProduct(this.getCoordsArr(), firstEdge.getOther(this).getCoordsArr(),
-                this.getCoordsArr(), secondEdge.getOther(this).getCoordsArr());
-            return crossProduct / firstEdge.length() / secondEdge.length();
+            int crossProduct = SimplePolygon.CrossProduct(this.GetCoordsArr(), firstEdge.GetOther(this).GetCoordsArr(),
+                this.GetCoordsArr(), secondEdge.GetOther(this).GetCoordsArr());
+            return crossProduct / firstEdge.Length() / secondEdge.Length();
         }
 
-        public double sinAngle(Vertex firstVertex, Vertex secondVertex)
+        public double SinAngle(Vertex firstVertex, Vertex secondVertex)
         {
-            int crossProduct = SimplePolygon.crossProduct(this.getCoordsArr(), firstVertex.getCoordsArr(),
-                this.getCoordsArr(), secondVertex.getCoordsArr());
-            return crossProduct / distance(firstVertex) / distance(secondVertex);
+            int crossProduct = SimplePolygon.CrossProduct(this.GetCoordsArr(), firstVertex.GetCoordsArr(),
+                this.GetCoordsArr(), secondVertex.GetCoordsArr());
+            return crossProduct / Distance(firstVertex) / Distance(secondVertex);
         }
 
-        public double distance(Vertex other)
+        public double Distance(Vertex other)
         {
-            return Math.Sqrt(Math.Pow(this.x - other.x, 2) + Math.Pow(this.y - other.y, 2));
+            return Math.Sqrt(Math.Pow(this._x - other._x, 2) + Math.Pow(this._y - other._y, 2));
         }
     }
 
 
     class Edge
     {
-        private Vertex start, end;
-        private int[] center;
+        private Vertex _start, _end;
+        private readonly int[] _center;
 
         public Edge(Vertex start, Vertex end)
         {
-            this.start = start;
-            this.end = end;
-            center = new int[] { (start.getX() + end.getX()) / 2, (start.getY() + end.getY()) / 2 };
+            this._start = start;
+            this._end = end;
+            _center = new int[] { (start.GetX() + end.GetX()) / 2, (start.GetY() + end.GetY()) / 2 };
         }
 
-        public static Edge polygonalEdge(Vertex start, Vertex end)
+        public static Edge PolygonalEdge(Vertex start, Vertex end)
         {
             Edge edge = new Edge(start, end);
-            start.setNext(end);
-            end.setPrev(start);
+            start.SetNext(end);
+            end.SetPrev(start);
             return edge;
         }
 
-        public static void orderVertex(Vertex start, Vertex end)
+        public static void OrderVertex(Vertex start, Vertex end)
         {
-            start.setNext(end);
-            end.setPrev(start);
+            start.SetNext(end);
+            end.SetPrev(start);
         }
 
-        public bool contains(Vertex vertex)
+        public bool Contains(Vertex vertex)
         {
-            return start.Equals(vertex) || end.Equals(vertex);
+            return _start.Equals(vertex) || _end.Equals(vertex);
         }
 
-        public Vertex getEnd()
+        public Vertex GetEnd()
         {
-            return end;
+            return _end;
         }
 
-        public Vertex getStart()
+        public Vertex GetStart()
         {
-            return start;
+            return _start;
         }
 
-        public void invert()
+        public void Invert()
         {
-            (start, end) = (end, start);
+            (_start, _end) = (_end, _start);
         }
 
 
-        public void paint(Graphics g, int i)
+        public void Paint(Graphics g, int i)
         {
             g.DrawString("" + i, new Font("Arial", 5), new SolidBrush(Color.Black),
-                new PointF(center[0] + 1, center[1]));
-            g.DrawLine(new Pen(Color.Black, 4), start.getX(), start.getY(), end.getX(), end.getY());
+                new PointF(_center[0] + 1, _center[1]));
+            g.DrawLine(new Pen(Color.Black, 4), _start.GetX(), _start.GetY(), _end.GetX(), _end.GetY());
         }
 
-        public int[] getCenter()
+        public int[] GetCenter()
         {
-            return center;
+            return _center;
         }
 
-        public Vertex getOther(Vertex vertex)
+        public Vertex GetOther(Vertex vertex)
         {
-            if (vertex.Equals(start))
+            if (vertex.Equals(_start))
             {
-                return end;
+                return _end;
             }
 
-            return start;
+            return _start;
         }
 
-        public double length()
+        public double Length()
         {
             return Math.Sqrt(
-                Math.Pow(start.getX() - end.getX(), 2) + Math.Pow(start.getY() - end.getY(), 2)
+                Math.Pow(_start.GetX() - _end.GetX(), 2) + Math.Pow(_start.GetY() - _end.GetY(), 2)
             );
         }
 
-        public void incorporate()
+        public void Incorporate()
         {
-            start.addEdge(this);
-            end.addEdge(this);
+            _start.AddEdge(this);
+            _end.AddEdge(this);
         }
     }
 
