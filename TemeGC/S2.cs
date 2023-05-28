@@ -1,10 +1,10 @@
 ﻿namespace TemeGC
 {
-    internal class S2
+    internal static class S2
     {
         public static PictureBox P1(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
             Graphics g = pb.CreateGraphics();
 
             return pb;
@@ -12,14 +12,14 @@
 
         public static PictureBox P2(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
 
             return pb;
         }
 
         public static PictureBox P3(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
 
             return pb;
         }

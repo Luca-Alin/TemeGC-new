@@ -6,11 +6,12 @@ namespace TemeGC
 {
     public partial class Form1 : Form
     {
-        public static int WIDTH;
-        public static int HEIGHT;
+        public static int width;
+        public static int height;
         
         public static PictureBox pictureBox1 = new PictureBox();
-        static void swap(object sender, EventArgs e)
+
+        private static void Swap(object sender, EventArgs e)
         {
             Button b = sender as Button;
             String s = b.Text;
@@ -101,26 +102,26 @@ namespace TemeGC
             }
         }
 
-        MyButton[] myButtons =
+        private MyButton[] _myButtons =
         {
-            new MyButton("S1P1", (s, e) => { swap(s, e); }),
-            new MyButton("S1P2", (s, e) => { swap(s, e); }),
-            new MyButton("S1P3", (s, e) => { swap(s, e); }),
-            new MyButton("S2P1", (s, e) => { swap(s, e); }),
-            new MyButton("S2P3", (s, e) => { swap(s, e); }),
-            new MyButton("S2P3", (s, e) => { swap(s, e); }),
-            new MyButton("S3P1", (s, e) => { swap(s, e); }),
-            new MyButton("S3P2", (s, e) => { swap(s, e); }),
-            new MyButton("S4P1", (s, e) => { swap(s, e); }),
-            new MyButton("S5P1", (s, e) => { swap(s, e); }),
-            new MyButton("S6P1", (s, e) => { swap(s, e); }),
-            new MyButton("S6P2", (s, e) => { swap(s, e); }),
-            new MyButton("S6P3", (s, e) => { swap(s, e); }),
-            new MyButton("S7P1", (s, e) => { swap(s, e); }),
-            new MyButton("S8P1", (s, e) => { swap(s, e); }),
-            new MyButton("S9P1", (s, e) => { swap(s, e); }),
-            new MyButton("S10P1", (s, e) => { swap(s, e); }),
-            new MyButton("S11P1", (s, e) => { swap(s, e); })
+            new MyButton("S1P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S1P2", (s, e) => { Swap(s, e); }),
+            new MyButton("S1P3", (s, e) => { Swap(s, e); }),
+            new MyButton("S2P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S2P3", (s, e) => { Swap(s, e); }),
+            new MyButton("S2P3", (s, e) => { Swap(s, e); }),
+            new MyButton("S3P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S3P2", (s, e) => { Swap(s, e); }),
+            new MyButton("S4P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S5P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S6P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S6P2", (s, e) => { Swap(s, e); }),
+            new MyButton("S6P3", (s, e) => { Swap(s, e); }),
+            new MyButton("S7P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S8P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S9P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S10P1", (s, e) => { Swap(s, e); }),
+            new MyButton("S11P1", (s, e) => { Swap(s, e); })
         };
 
         public Form1()
@@ -128,14 +129,14 @@ namespace TemeGC
             InitializeComponent();
 
             
-            foreach (MyButton mb in myButtons)
+            foreach (MyButton mb in _myButtons)
             {
                 flowLayoutPanel1.Controls.Add(mb);
             }
             pictureBox1.Size = new Size(flowLayoutPanel2.Width, flowLayoutPanel2.Height);
             flowLayoutPanel2.Controls.Add (pictureBox1);
-            WIDTH = flowLayoutPanel2.Width;
-            HEIGHT = flowLayoutPanel2.Height;
+            width = flowLayoutPanel2.Width;
+            height = flowLayoutPanel2.Height;
 
         }
 
@@ -146,6 +147,6 @@ namespace TemeGC
         }
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
+        private static extern bool AllocConsole();
     }
 }

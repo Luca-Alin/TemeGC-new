@@ -2,43 +2,43 @@
 
 namespace TemeGC
 {
-    internal class S4
+    internal static class S4
     {
-        static int n;
-        static List<Point> points;
-        static Random random = new Random();
-        static int lowerHull;
-        static List<List<Point>> myHull = new List<List<Point>>();
+        private static int _n;
+        private static List<Point> _points = null!;
+        private static Random _random = new Random();
+        private static int _lowerHull;
+        private static List<List<Point>> _myHull = new List<List<Point>>();
         public static PictureBox P1(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
             Graphics g = pb.CreateGraphics();
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 
-            n = 40;
-            points = new List<Point>();
-            for (int i = 0; i < n; i++)
+            _n = 40;
+            _points = new List<Point>();
+            for (int i = 0; i < _n; i++)
             {
-                int x = random.Next(40, Form1.WIDTH - 40);
-                int y = random.Next(40, Form1.HEIGHT - 40);
-                points.Add(new Point(x, y));
+                int x = _random.Next(40, Form1.width - 40);
+                int y = _random.Next(40, Form1.height - 40);
+                _points.Add(new Point(x, y));
             }
 
-            ConvexHull.convexHull(points);
+            ConvexHullClass.ConvexHull(_points);
 
 
 
-            for (int i = 0; i < points.Count; i++)
-                g.FillEllipse(new SolidBrush(Color.Yellow), points[i].X - 6, points[i].Y - 6, 12, 12);
+            for (int i = 0; i < _points.Count; i++)
+                g.FillEllipse(new SolidBrush(Color.Yellow), _points[i].X - 6, _points[i].Y - 6, 12, 12);
 
 
             SolidBrush solidBrush = new SolidBrush(Color.Red);
-            List<Point> awt = myHull[myHull.Count - 1];
+            List<Point> awt = _myHull[_myHull.Count - 1];
             for (int i = 0; i < awt.Count - 1; i++)
             {
-                Console.WriteLine(lowerHull);
-                if (i >= lowerHull - 1)
+                Console.WriteLine(_lowerHull);
+                if (i >= _lowerHull - 1)
                     solidBrush = new SolidBrush(Color.Blue);
                 Point p1 = awt[i];
                 Point p2 = awt[i + 1];
@@ -50,16 +50,15 @@ namespace TemeGC
             return pb;
         }
 
-        class ConvexHull
+        private class ConvexHullClass
         {
-
-            static long crossProduct(Point O, Point A, Point B)
+            private static long CrossProduct(Point o, Point a, Point b)
             {
-                return (A.X - O.X) * (B.Y - O.Y) - (A.Y - O.Y) * (B.X - O.X);
+                return (a.X - o.X) * (b.Y - o.Y) - (a.Y - o.Y) * (b.X - o.X);
             }
 
 
-            public static List<Point> convexHull(List<Point> points)
+            public static List<Point> ConvexHull(List<Point> points)
             {
                 int n = points.Count(), k = 0;
 
@@ -75,26 +74,26 @@ namespace TemeGC
                 for (int i = 0; i < n; ++i)
                 {
 
-                    while (k >= 2 && crossProduct(hullPoints[k - 2], hullPoints[k - 1], points[i]) <= 0)
+                    while (k >= 2 && CrossProduct(hullPoints[k - 2], hullPoints[k - 1], points[i]) <= 0)
                     {
                         hullPoints.RemoveAt(--k);
                     }
                     hullPoints.Add(points[i]);
-                    myHull.Add(new List<Point>(hullPoints));
+                    _myHull.Add(new List<Point>(hullPoints));
                     k++;
                 }
 
-                lowerHull = hullPoints.Count;
+                _lowerHull = hullPoints.Count;
 
                 for (int i = n - 2, t = k; i >= 0; --i)
                 {
 
-                    while (k > t && crossProduct(hullPoints[k - 2], hullPoints[k - 1], points[i]) <= 0)
+                    while (k > t && CrossProduct(hullPoints[k - 2], hullPoints[k - 1], points[i]) <= 0)
                     {
                         hullPoints.RemoveAt(--k);
                     }
                     hullPoints.Add(points[i]);
-                    myHull.Add(new List<Point>(hullPoints));
+                    _myHull.Add(new List<Point>(hullPoints));
                     k++;
                 }
                 return hullPoints;

@@ -1,6 +1,6 @@
 ﻿namespace TemeGC
 {
-    internal class MyButton : Button
+    internal sealed class MyButton : Button
     {
         public MyButton(string text, EventHandler eventE)
         {

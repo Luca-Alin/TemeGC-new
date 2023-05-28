@@ -5,38 +5,38 @@ namespace TemeGC
 {
     internal class S6
     {
-        static Random random = new Random();
+        private static Random _random = new Random();
         public static PictureBox P1(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
             Graphics g = pb.CreateGraphics();
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             List<PointF> points = new List<PointF>();
             for (int i = 0; i < 10; i++)
-                points.Add(new PointF(random.Next(40, Form1.WIDTH - 40),
-                                        random.Next(40, Form1.HEIGHT - 40)));
+                points.Add(new PointF(_random.Next(40, Form1.width - 40),
+                                        _random.Next(40, Form1.height - 40)));
 
             //All possible segments
-            List<Segment> APS = new List<Segment>();
+            List<Segment> aps = new List<Segment>();
             for (int i = 0; i < points.Count - 1; i++)
                 for (int j = i + 1; j < points.Count; j++)
-                    APS.Add(new Segment(points[i], points[j]));
+                    aps.Add(new Segment(points[i], points[j]));
 
-            APS.Sort((s1, s2) =>
+            aps.Sort((s1, s2) =>
             {
-                if (segmentSize(s1) > segmentSize(s2)) return 1;
-                else if (segmentSize(s1) > segmentSize(s2)) return -1;
+                if (SegmentSize(s1) > SegmentSize(s2)) return 1;
+                else if (SegmentSize(s1) > SegmentSize(s2)) return -1;
                 return 0;
             });
 
             List<Segment> triangulation = new List<Segment>();
-            for (int i = 0; i < APS.Count; i++)
+            for (int i = 0; i < aps.Count; i++)
             {
-                Segment s = APS[i];
+                Segment s = aps[i];
                 bool ok = true;
                 for (int j = 0; j < triangulation.Count; j++)
-                    if (doIntersect(s, triangulation[j]))
+                    if (DoIntersect(s, triangulation[j]))
                         ok = false;
                 if (ok)
                     triangulation.Add(s);
@@ -55,7 +55,7 @@ namespace TemeGC
 
         public static PictureBox P2(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
             Graphics g = pb.CreateGraphics();
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
@@ -82,7 +82,7 @@ namespace TemeGC
             return pb;
         }
 
-        class Segment
+        private class Segment
         {
             public PointF p1;
             public PointF p2;
@@ -94,7 +94,7 @@ namespace TemeGC
         }
         public static PictureBox P3(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
 
 
 
@@ -165,7 +165,7 @@ namespace TemeGC
                         bool good = true;
 
                         for (int j = 0; j < segments.Count; j++)
-                            if (doIntersect(segment, segments[j]))
+                            if (DoIntersect(segment, segments[j]))
                                 good = false;
 
                         double auxAngle;
@@ -190,31 +190,31 @@ namespace TemeGC
         }
 
         //Helper Functions
-        private static bool doIntersect(Segment s, Segment p)
+        private static bool DoIntersect(Segment s, Segment p)
         {
             PointF s1 = s.p1;
             PointF s2 = s.p2;
             PointF p1 = p.p1;
             PointF p2 = p.p2;
 
-            return determinant(p2, p1, s1) * determinant(p2, p1, s2) < 0 && determinant(s2, s1, p1) * determinant(s2, s1, p2) < 0;
+            return Determinant(p2, p1, s1) * Determinant(p2, p1, s2) < 0 && Determinant(s2, s1, p1) * Determinant(s2, s1, p2) < 0;
         }
 
-        private static float determinant(PointF p, PointF q, PointF r)
+        private static float Determinant(PointF p, PointF q, PointF r)
         {
             return (p.X * q.Y) + (q.X * r.Y) + (r.X * p.Y) -
                     (q.Y * r.X) - (p.X * r.Y) - (p.Y * q.X);
         }
 
-        private static double segmentSize(Segment s)
+        private static double SegmentSize(Segment s)
         {
             return Math.Sqrt(
                         Math.Pow(s.p1.X - s.p2.X, 2) + Math.Pow(s.p1.Y - s.p2.Y, 2)
             );
         }
-        private static double CalculateAngle(PointF A, PointF B, PointF C)
+        private static double CalculateAngle(PointF a, PointF b, PointF c)
         {
-            double angle = Math.Atan2(A.X - B.X, B.Y - A.Y) - Math.Atan2(C.X - B.X, B.Y - C.Y);
+            double angle = Math.Atan2(a.X - b.X, b.Y - a.Y) - Math.Atan2(c.X - b.X, b.Y - c.Y);
             angle = angle * (180 / Math.PI);
             if (angle < 0)
                 angle += 360;
@@ -222,10 +222,10 @@ namespace TemeGC
             return angle;
         }
 
-        private static double CalculateDistance(PointF A, PointF B)
+        private static double CalculateDistance(PointF a, PointF b)
         {
             return Math.Sqrt(
-                    Math.Pow(A.X - B.X, 2) + Math.Pow(A.Y - B.Y, 2)
+                    Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)
                 );
         }
 

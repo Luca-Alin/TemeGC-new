@@ -2,37 +2,33 @@
 {
     internal class S5
     {
-        static int n;
-        static Point[] points;
-        static Random random = new Random();
-        static List<List<Point>> convexHullList = new List<List<Point>>();
+        private static int _n;
+        private static Point[] _points;
+        private static Random _random = new Random();
+        private static List<List<Point>> _convexHullList = new List<List<Point>>();
 
         public static PictureBox P1(PictureBox pb)
         {
-            pb.Size = new Size(Form1.WIDTH, Form1.HEIGHT);
+            pb.Size = new Size(Form1.width, Form1.height);
             Graphics g = pb.CreateGraphics();
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-
-            Console.WriteLine("Yes");
-
-            n = 40;
-            points = new Point[n];
-            for (int i = 0; i < points.Length; i++)
+            
+            _n = 40;
+            _points = new Point[_n];
+            for (int i = 0; i < _points.Length; i++)
             {
-                int x = random.Next(40, Form1.WIDTH - 40);
-                int y = random.Next(40, Form1.HEIGHT - 40);
-                points[i] = new Point(x, y);
+                int x = _random.Next(40, Form1.width - 40);
+                int y = _random.Next(40, Form1.height - 40);
+                _points[i] = new Point(x, y);
             }
-            Console.WriteLine("Yes");
 
-            for (int i = 0; i < points.Length; i++)
-                g.FillEllipse(new SolidBrush(Color.Red), points[i].X - 6, points[i].Y - 6, 12, 12);
+            for (int i = 0; i < _points.Length; i++)
+                g.FillEllipse(new SolidBrush(Color.Red), _points[i].X - 6, _points[i].Y - 6, 12, 12);
 
-            ConvexHull.convexHull(points, points.Length);
+            ConvexHullClass.ConvexHull(_points, _points.Length);
 
 
-            List<Point> awt = new List<Point>(convexHullList[convexHullList.Count - 1]);
+            List<Point> awt = new List<Point>(_convexHullList[_convexHullList.Count - 1]);
             for (int i = 0; i < awt.Count; i++)
             {
                 Point a = awt[i];
@@ -43,9 +39,9 @@
             return pb;
         }
 
-        class ConvexHull
+        private class ConvexHullClass
         {
-            static int orientation(Point p, Point q, Point r)
+            private static int Orientation(Point p, Point q, Point r)
             {
                 int val = (q.Y - p.Y) * (r.X - q.X) -
                         (q.X - p.X) * (r.Y - q.Y);
@@ -55,7 +51,7 @@
                 return (val > 0) ? 1 : 2;
             }
 
-            public static void convexHull(Point[] points, int n)
+            public static void ConvexHull(Point[] points, int n)
             {
                 if (n < 3) return;
 
@@ -70,13 +66,13 @@
                 do
                 {
                     hull.Add(points[p]);
-                    convexHullList.Add(new List<Point>(hull));
+                    _convexHullList.Add(new List<Point>(hull));
 
                     q = (p + 1) % n;
 
                     for (int i = 0; i < n; i++)
                     {
-                        if (orientation(points[p], points[i], points[q]) == 2)
+                        if (Orientation(points[p], points[i], points[q]) == 2)
                             q = i;
                     }
 

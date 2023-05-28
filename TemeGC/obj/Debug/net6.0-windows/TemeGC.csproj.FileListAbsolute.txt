@@ -15,3 +15,20 @@ C:\Users\Computer9088\OneDrive - Universitatea din Oradea\Documente\C#\TemeGC\Te
 C:\Users\Computer9088\OneDrive - Universitatea din Oradea\Documente\C#\TemeGC\TemeGC\obj\Debug\net6.0-windows\TemeGC.pdb
 C:\Users\Computer9088\OneDrive - Universitatea din Oradea\Documente\C#\TemeGC\TemeGC\obj\Debug\net6.0-windows\TemeGC.genruntimeconfig.cache
 C:\Users\Computer9088\OneDrive - Universitatea din Oradea\Documente\C#\TemeGC\TemeGC\obj\Debug\net6.0-windows\ref\TemeGC.dll
+C:\Users\Computer9088\Documents\CDiez\TemeGC\bin\Debug\net6.0-windows\TemeGC.exe
+C:\Users\Computer9088\Documents\CDiez\TemeGC\bin\Debug\net6.0-windows\TemeGC.deps.json
+C:\Users\Computer9088\Documents\CDiez\TemeGC\bin\Debug\net6.0-windows\TemeGC.runtimeconfig.json
+C:\Users\Computer9088\Documents\CDiez\TemeGC\bin\Debug\net6.0-windows\TemeGC.dll
+C:\Users\Computer9088\Documents\CDiez\TemeGC\bin\Debug\net6.0-windows\TemeGC.pdb
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.csproj.AssemblyReference.cache
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.Form1.resources
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.csproj.GenerateResource.cache
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.AssemblyInfoInputs.cache
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.AssemblyInfo.cs
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.csproj.CoreCompileInputs.cache
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.dll
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\refint\TemeGC.dll
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.pdb
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\TemeGC.genruntimeconfig.cache
+C:\Users\Computer9088\Documents\CDiez\TemeGC\obj\Debug\net6.0-windows\ref\TemeGC.dll
